@@ -1,6 +1,7 @@
 package net.bogdanvalentin.floatater;
 
 import net.bogdanvalentin.floatater.network.FloataterNetwork;
+import net.bogdanvalentin.floatater.network.GridWaitPayload;
 import net.bogdanvalentin.floatater.network.SubGridPayload;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -38,5 +39,6 @@ public class FloataterMod {
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
         registrar.playToClient(SubGridPayload.TYPE, SubGridPayload.CODEC, (payload, context) -> payload.apply(context.player().level()));
+        registrar.playToClient(GridWaitPayload.TYPE, GridWaitPayload.CODEC, (payload, context) -> payload.apply(context.player()));
     }
 }
