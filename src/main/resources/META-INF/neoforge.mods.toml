@@ -3,24 +3,24 @@ loaderVersion = "[4,)"
 license = "All Rights Reserved"
 
 [[mods]]
-modId = "floatater"
+modId = "floatater_classic"
 version = "${version}"
-displayName = "Floatater"
+displayName = "Floatater Classic"
 authors = "BogdanValentin977"
 description = '''Brings back the Floatater from the 24w14potato April Fools snapshot: a redstone engine that flies whole contraptions.'''
 iconFile = "icon.png"
 
 [[mixins]]
-config = "floatater.mixins.json"
+config = "floatater_classic.mixins.json"
 
-[[dependencies.floatater]]
+[[dependencies.floatater_classic]]
 modId = "neoforge"
 type = "required"
 versionRange = "[26.2.0,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.floatater]]
+[[dependencies.floatater_classic]]
 modId = "minecraft"
 type = "required"
 versionRange = "[26.2,26.3)"

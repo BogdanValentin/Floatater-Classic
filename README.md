@@ -1,4 +1,4 @@
-# Floatater
+# Floatater Classic
 
 Brings back the Floatater from the 24w14potato April Fools snapshot (the Poisonous Potato Update).
 
@@ -19,7 +19,7 @@ Some things you'll run into:
 - Water doesn't come with you. Waterlogged blocks fly dry.
 - Keep your build off the ground. It grabs everything connected to it, and if that adds up to more than the size limit, nothing moves.
 
-The size limit is the `floatater:floatater_size_limit` game rule. It defaults to 32, so a contraption can be at most 32 x 32 x 32 blocks.
+The size limit is the `floatater_classic:floatater_size_limit` game rule. It defaults to 32, so a contraption can be at most 32 x 32 x 32 blocks.
 
 ## Floatato
 

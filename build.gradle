@@ -29,7 +29,7 @@ neoForge {
 	}
 
 	mods {
-		floatater {
+		floatater_classic {
 			sourceSet sourceSets.main
 		}
 	}

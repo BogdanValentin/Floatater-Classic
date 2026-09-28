@@ -1,0 +1,20 @@
+{
+	"required": true,
+	"package": "net.bogdanvalentin.floataterclassic.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"EntityMixin",
+		"LevelMixin",
+		"PlayerListMixin",
+		"ServerGamePacketListenerImplMixin",
+		"ServerLevelEntityCallbacksMixin",
+		"ServerLevelMixin"
+	],
+	"client": [
+		"ClientLevelEntityCallbacksMixin",
+		"ClientLevelMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
