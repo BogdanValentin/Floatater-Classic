@@ -1,12 +1,12 @@
-# Floatater
+# Floatater Classic
 
 Brings back the Floatater from the 24w14potato April Fools snapshot (the Poisonous Potato Update).
 
-It only existed for that one snapshot. This mod ports the original code to current Minecraft so you can keep building flying machines.
+This mod ports the original code to current Minecraft so you can keep building flying machines.
 
 ## How it works
 
-Place a Floatater and it faces whichever way you're looking. That front face is the direction it flies. Give it a redstone signal and a tick later it grabs everything attached to its front and takes off with it.
+Place a Floatater and it will face whichever way you're looking. That front face is the direction it flies. Give it a redstone signal and a tick later it grabs everything attached to its front and takes off with it.
 
 "Attached" works the same way it did in the snapshot. Blocks stick together when their touching faces overlap. Slime and honey stick on every side, a sticky piston sticks on its face, and a Floatater only sticks on its front. Whatever sits directly in front of it gets pushed along too, even if the shapes don't touch.
 
@@ -19,7 +19,7 @@ Some things you'll run into:
 - Water doesn't come with you. Waterlogged blocks fly dry.
 - Keep your build off the ground. It grabs everything connected to it, and if that adds up to more than the size limit, nothing moves.
 
-The size limit is the `floatater:floatater_size_limit` game rule. It defaults to 32, so a contraption can be at most 32 x 32 x 32 blocks.
+The size limit is the `floatater_classic:floatater_size_limit` game rule. It defaults to 32, so a contraption can be at most 32 x 32 x 32 blocks.
 
 ## Floatato
 
