@@ -16,7 +16,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
-import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.ValueInput;
@@ -29,6 +28,7 @@ public class GridCarrier extends Entity {
     private static final EntityDataAccessor<Direction> MOVEMENT_DIRECTION = SynchedEntityData.defineId(GridCarrier.class, EntityDataSerializers.DIRECTION);
     private static final EntityDataAccessor<Float> MOVEMENT_SPEED = SynchedEntityData.defineId(GridCarrier.class, EntityDataSerializers.FLOAT);
     private final SubGrid grid;
+    private final InterpolationHandler interpolation = new InterpolationHandler(this, LERP_STEPS);
     private @Nullable SubGridMovementCollider movementCollider;
     private int placeInTicks;
 
@@ -62,6 +62,10 @@ public class GridCarrier extends Entity {
 
     @Override
     public void tick() {
+        if (this.level().isClientSide()) {
+            this.interpolation.interpolate();
+        }
+
         super.tick();
         this.grid.getBlocks().tick(this.level(), this.position(), this.getMovementDirection());
         if (!this.level().isClientSide()) {
@@ -155,8 +159,8 @@ public class GridCarrier extends Entity {
     }
 
     @Override
-    protected InterpolationHandler createInterpolationHandler() {
-        return LinearInterpolationHandler.create(this, LERP_STEPS);
+    public InterpolationHandler getInterpolation() {
+        return this.interpolation;
     }
 
     @Override
@@ -171,7 +175,7 @@ public class GridCarrier extends Entity {
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return PushReaction.IGNORE_ENTITY;
+        return PushReaction.IGNORE;
     }
 
     @Override

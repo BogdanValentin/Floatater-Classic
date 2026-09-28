@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 
 public class GridCarrierRenderer extends EntityRenderer<GridCarrier, GridCarrierRenderState> {
@@ -25,12 +24,12 @@ public class GridCarrierRenderer extends EntityRenderer<GridCarrier, GridCarrier
     }
 
     @Override
-    protected AABB getBoundingBoxForCulling(GridCarrier carrier, float partialTicks) {
-        double x = Mth.lerp(partialTicks, carrier.xOld, carrier.getX());
-        double y = Mth.lerp(partialTicks, carrier.yOld, carrier.getY());
-        double z = Mth.lerp(partialTicks, carrier.zOld, carrier.getZ());
+    protected AABB getBoundingBoxForCulling(GridCarrier carrier) {
+        double x = Math.min(carrier.xOld, carrier.getX());
+        double y = Math.min(carrier.yOld, carrier.getY());
+        double z = Math.min(carrier.zOld, carrier.getZ());
         SubGridBlocks blocks = carrier.grid().getBlocks();
-        return new AABB(x, y, z, x + blocks.sizeX() + 1.0, y + blocks.sizeY() + 1.0, z + blocks.sizeZ() + 1.0).inflate(CULL_BUFFER_SIZE);
+        return new AABB(x, y, z, Math.max(carrier.xOld, carrier.getX()) + blocks.sizeX() + 1.0, Math.max(carrier.yOld, carrier.getY()) + blocks.sizeY() + 1.0, Math.max(carrier.zOld, carrier.getZ()) + blocks.sizeZ() + 1.0).inflate(CULL_BUFFER_SIZE);
     }
 
     @Override

@@ -16,13 +16,13 @@ config = "floatater.mixins.json"
 [[dependencies.floatater]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.3.0,)"
+versionRange = "[26.2.0,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.floatater]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.3,26.4)"
+versionRange = "[26.2,26.3)"
 ordering = "NONE"
 side = "BOTH"
