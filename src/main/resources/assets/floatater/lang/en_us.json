@@ -1,7 +1,0 @@
-{
-  "block.floatater.floatater": "Floatater",
-  "block.floatater.floatato": "Floatato",
-  "entity.floatater.grid_carrier": "Floating Contraption",
-  "gamerule.floatater.floatater_size_limit": "Floatater size limit",
-  "gamerule.floatater.floatater_size_limit.description": "Floatater structures can be at maximum NxNxN blocks in size."
-}

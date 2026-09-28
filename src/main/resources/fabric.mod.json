@@ -1,25 +1,25 @@
 {
 	"schemaVersion": 1,
-	"id": "floatater",
+	"id": "floatater_classic",
 	"version": "${version}",
-	"name": "Floatater",
+	"name": "Floatater Classic",
 	"description": "Brings back the Floatater from the 24w14potato April Fools snapshot: a redstone engine that flies whole contraptions.",
 	"authors": [
 		"BogdanValentin977"
 	],
 	"license": "All Rights Reserved",
-	"icon": "assets/floatater/icon.png",
+	"icon": "assets/floatater_classic/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.bogdanvalentin.floatater.FloataterMod"
+			"net.bogdanvalentin.floataterclassic.FloataterClassicMod"
 		],
 		"client": [
-			"net.bogdanvalentin.floatater.FloataterClient"
+			"net.bogdanvalentin.floataterclassic.FloataterClassicClient"
 		]
 	},
 	"mixins": [
-		"floatater.mixins.json"
+		"floatater_classic.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.5",
