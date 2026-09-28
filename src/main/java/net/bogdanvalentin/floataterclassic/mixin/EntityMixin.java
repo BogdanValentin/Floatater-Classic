@@ -12,6 +12,7 @@ import net.bogdanvalentin.floataterclassic.grid.SubGrid;
 import net.bogdanvalentin.floataterclassic.grid.SubGridCollisions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
@@ -34,6 +35,9 @@ public abstract class EntityMixin implements GridRider {
     @Unique
     private static final String FLOATATER$ATTACHED_GRID_KEY = "floatater_classic:attached_grid";
 
+    @Unique
+    private static final String FLOATATER$ATTACHED_GRID_OFFSET_KEY = "floatater_classic:attached_grid_offset";
+
     @Shadow
     public boolean verticalCollision;
 
@@ -52,8 +56,14 @@ public abstract class EntityMixin implements GridRider {
     @Shadow
     public abstract void setDeltaMovement(double x, double y, double z);
 
+    @Shadow
+    public abstract void snapTo(double x, double y, double z);
+
     @Unique
     private @Nullable SubGrid floatater_classic$attachedGrid;
+
+    @Unique
+    private @Nullable Vec3 floatater_classic$pendingOffset;
 
     @Unique
     private int floatater_classic$attachedGridTimeout;
@@ -91,17 +101,35 @@ public abstract class EntityMixin implements GridRider {
         if (this.floatater_classic$pendingGrid != null) {
             SubGrid grid = GridLevel.grids(this.level()).get(this.floatater_classic$pendingGrid);
             if (grid != null) {
+                this.floatater_classic$reseatOn(grid);
                 this.floatater_classic$attachedGrid = grid;
                 this.floatater_classic$attachedGridTimeout = SubGridCollisions.ATTACHED_GRID_TIMEOUT;
                 this.floatater_classic$pendingGrid = null;
+                this.floatater_classic$pendingOffset = null;
             } else if (--this.floatater_classic$pendingGridTimeout <= 0 || this.floatater_classic$attachedGrid != null) {
                 this.floatater_classic$pendingGrid = null;
+                this.floatater_classic$pendingOffset = null;
             } else {
                 Vec3 motion = this.getDeltaMovement();
                 if (motion.y < 0.0) {
                     this.setDeltaMovement(motion.x, 0.0, motion.z);
                 }
             }
+        }
+    }
+
+    @Unique
+    private void floatater_classic$reseatOn(SubGrid grid) {
+        Vec3 offset = this.floatater_classic$pendingOffset;
+        if (offset == null || this.level().isClientSide()) {
+            return;
+        }
+
+        Vec3 target = grid.carrier().position().add(offset);
+        if ((Object) this instanceof ServerPlayer player) {
+            player.connection.teleport(target.x, target.y, target.z, player.getYRot(), player.getXRot());
+        } else {
+            this.snapTo(target.x, target.y, target.z);
         }
     }
 
@@ -116,15 +144,21 @@ public abstract class EntityMixin implements GridRider {
     private void floatater_classic$saveAttachedGrid(ValueOutput output, CallbackInfo ci) {
         SubGrid grid = this.floatater_classic$attachedGrid != null ? this.floatater_classic$attachedGrid : SubGridCollisions.findGridBelow((Entity) (Object) this);
         UUID gridId = grid != null ? grid.id() : this.floatater_classic$pendingGrid;
+        Vec3 offset = grid != null ? ((Entity) (Object) this).position().subtract(grid.carrier().position()) : this.floatater_classic$pendingOffset;
         if (gridId != null) {
             output.store(FLOATATER$ATTACHED_GRID_KEY, UUIDUtil.CODEC, gridId);
+            if (offset != null) {
+                output.store(FLOATATER$ATTACHED_GRID_OFFSET_KEY, Vec3.CODEC, offset);
+            }
         }
     }
 
     @Inject(method = "load", at = @At("TAIL"))
     private void floatater_classic$loadAttachedGrid(ValueInput input, CallbackInfo ci) {
-        input.read(FLOATATER$ATTACHED_GRID_KEY, UUIDUtil.CODEC)
-                .ifPresent(gridId -> this.floatater_classic$waitForGrid(gridId, GridRider.SERVER_RELOAD_TIMEOUT));
+        input.read(FLOATATER$ATTACHED_GRID_KEY, UUIDUtil.CODEC).ifPresent(gridId -> {
+            this.floatater_classic$waitForGrid(gridId, GridRider.SERVER_RELOAD_TIMEOUT);
+            this.floatater_classic$pendingOffset = input.read(FLOATATER$ATTACHED_GRID_OFFSET_KEY, Vec3.CODEC).orElse(null);
+        });
     }
 
     @WrapOperation(
