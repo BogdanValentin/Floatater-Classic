@@ -2,35 +2,41 @@ package net.bogdanvalentin.floatater;
 
 import net.bogdanvalentin.floatater.network.FloataterNetwork;
 import net.bogdanvalentin.floatater.network.SubGridPayload;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
-public class FloataterMod implements ModInitializer {
-    @Override
-    public void onInitialize() {
-        FloataterContent.registerBlocks((id, block) -> Registry.register(BuiltInRegistries.BLOCK, id, block));
-        FloataterContent.registerItems((id, item) -> {
-            Registry.register(BuiltInRegistries.ITEM, id, item);
-            if (item instanceof BlockItem blockItem) {
-                blockItem.registerBlocks(Item.BY_BLOCK, item);
-            }
-        });
-        FloataterContent.registerEntityTypes((id, type) -> Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type));
-        FloataterContent.registerGameRules((id, rule) -> Registry.register(BuiltInRegistries.GAME_RULE, id, rule));
+@Mod(Floatater.MOD_ID)
+public class FloataterMod {
+    public FloataterMod(IEventBus modBus) {
+        modBus.addListener(this::register);
+        modBus.addListener(this::buildCreativeTabs);
+        modBus.addListener(this::registerPayloads);
+        FloataterNetwork.setSender(PacketDistributor::sendToPlayer);
+    }
 
-        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(output -> {
-            output.accept(FloataterContent.FLOATATO_ITEM);
-            output.accept(FloataterContent.FLOATATER_ITEM);
-        });
+    private void register(RegisterEvent event) {
+        event.register(Registries.BLOCK, helper -> FloataterContent.registerBlocks(helper::register));
+        event.register(Registries.ITEM, helper -> FloataterContent.registerItems(helper::register));
+        event.register(Registries.ENTITY_TYPE, helper -> FloataterContent.registerEntityTypes(helper::register));
+        event.register(Registries.GAME_RULE, helper -> FloataterContent.registerGameRules(helper::register));
+    }
 
-        PayloadTypeRegistry.clientboundPlay().register(SubGridPayload.TYPE, SubGridPayload.CODEC);
-        FloataterNetwork.setSender(ServerPlayNetworking::send);
+    private void buildCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+            event.accept(FloataterContent.FLOATATO_ITEM);
+            event.accept(FloataterContent.FLOATATER_ITEM);
+        }
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToClient(SubGridPayload.TYPE, SubGridPayload.CODEC, (payload, context) -> payload.apply(context.player().level()));
     }
 }

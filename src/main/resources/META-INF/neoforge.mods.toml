@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "CC0-1.0"
+
+[[mods]]
+modId = "floatater"
+version = "${version}"
+displayName = "Floatater"
+authors = "BogdanValentin977"
+description = '''Brings back the Floatater from the 24w14potato April Fools snapshot: a redstone engine that flies whole contraptions.'''
+iconFile = "icon.png"
+
+[[mixins]]
+config = "floatater.mixins.json"
+
+[[dependencies.floatater]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.3.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.floatater]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.3,26.4)"
+ordering = "NONE"
+side = "BOTH"

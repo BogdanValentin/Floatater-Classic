@@ -1,5 +1,5 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'net.neoforged.moddev' version "${moddev_version}"
 	id 'maven-publish'
 }
 
@@ -10,13 +10,27 @@ base {
 	archivesName = project.archives_base_name
 }
 
-loom {
+neoForge {
+	version = project.neoforge_version
+
 	runs {
+		client {
+			client()
+		}
 		client2 {
 			client()
-			configName = "Minecraft Client 2"
-			programArgs "--username", "Tester2"
-			runDir "run/client2"
+			programArgument '--username'
+			programArgument 'Tester2'
+			gameDirectory = file('run/client2')
+		}
+		server {
+			server()
+		}
+	}
+
+	mods {
+		floatater {
+			sourceSet sourceSets.main
 		}
 	}
 }
@@ -25,15 +39,12 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 processResources {
 	inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
+	filesMatching("META-INF/neoforge.mods.toml") {
 		expand "version": project.version
 	}
 }

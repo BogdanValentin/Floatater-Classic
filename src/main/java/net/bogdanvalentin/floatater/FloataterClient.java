@@ -1,15 +1,18 @@
 package net.bogdanvalentin.floatater;
 
 import net.bogdanvalentin.floatater.client.GridCarrierRenderer;
-import net.bogdanvalentin.floatater.network.SubGridPayload;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
-public class FloataterClient implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
-        EntityRendererRegistry.register(FloataterContent.GRID_CARRIER, GridCarrierRenderer::new);
-        ClientPlayNetworking.registerGlobalReceiver(SubGridPayload.TYPE, (payload, context) -> payload.apply(context.player().level()));
+@Mod(value = Floatater.MOD_ID, dist = Dist.CLIENT)
+public class FloataterClient {
+    public FloataterClient(IEventBus modBus) {
+        modBus.addListener(this::registerRenderers);
+    }
+
+    private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(FloataterContent.GRID_CARRIER, GridCarrierRenderer::new);
     }
 }
