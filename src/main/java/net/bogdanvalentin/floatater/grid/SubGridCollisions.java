@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -25,6 +27,36 @@ public final class SubGridCollisions {
 
     public static boolean movesWithGrid(Entity entity) {
         return !(entity instanceof Player player && player.getAbilities().flying);
+    }
+
+    public static boolean noGridCollision(@Nullable Entity entity, AABB box, Level level) {
+        return entity instanceof GridCarrier || findGridIn(entity, box, level) == null;
+    }
+
+    public static @Nullable SubGrid findGridBelow(Entity entity) {
+        AABB below = entity.getBoundingBox().inflate(0.0625).expandTowards(0.0, -0.55, 0.0);
+        return findGridIn(entity, below, entity.level());
+    }
+
+    private static @Nullable SubGrid findGridIn(@Nullable Entity entity, AABB box, Level level) {
+        Map<UUID, SubGrid> grids = GridLevel.grids(level);
+        if (grids.isEmpty()) {
+            return null;
+        }
+
+        for (SubGrid grid : grids.values()) {
+            AABB bounds = grid.getNextBoundingBox();
+            if (bounds.intersects(box) && !grid.noBlockCollision(entity, box.move(-bounds.minX, -bounds.minY, -bounds.minZ))) {
+                return grid;
+            }
+        }
+
+        return null;
+    }
+
+    public static BlockState stateUnderFeet(Entity entity, SubGrid grid) {
+        Vec3 local = entity.position().subtract(grid.carrier().position()).add(0.0, -0.2F, 0.0);
+        return grid.getBlockState(BlockPos.containing(local));
     }
 
     public static Result collide(Entity entity, Vec3 movement, AABB box, Level level) {

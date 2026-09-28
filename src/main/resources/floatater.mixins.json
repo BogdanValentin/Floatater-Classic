@@ -5,6 +5,8 @@
 	"mixins": [
 		"EntityMixin",
 		"LevelMixin",
+		"PlayerListMixin",
+		"ServerGamePacketListenerImplMixin",
 		"ServerLevelEntityCallbacksMixin",
 		"ServerLevelMixin"
 	],

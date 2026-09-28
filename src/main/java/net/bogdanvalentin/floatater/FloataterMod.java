@@ -1,6 +1,7 @@
 package net.bogdanvalentin.floatater;
 
 import net.bogdanvalentin.floatater.network.FloataterNetwork;
+import net.bogdanvalentin.floatater.network.GridWaitPayload;
 import net.bogdanvalentin.floatater.network.SubGridPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
@@ -31,6 +32,7 @@ public class FloataterMod implements ModInitializer {
         });
 
         PayloadTypeRegistry.clientboundPlay().register(SubGridPayload.TYPE, SubGridPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(GridWaitPayload.TYPE, GridWaitPayload.CODEC);
         FloataterNetwork.setSender(ServerPlayNetworking::send);
     }
 }

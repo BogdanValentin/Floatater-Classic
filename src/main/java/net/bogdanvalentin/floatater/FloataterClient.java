@@ -1,6 +1,7 @@
 package net.bogdanvalentin.floatater;
 
 import net.bogdanvalentin.floatater.client.GridCarrierRenderer;
+import net.bogdanvalentin.floatater.network.GridWaitPayload;
 import net.bogdanvalentin.floatater.network.SubGridPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -11,5 +12,6 @@ public class FloataterClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(FloataterContent.GRID_CARRIER, GridCarrierRenderer::new);
         ClientPlayNetworking.registerGlobalReceiver(SubGridPayload.TYPE, (payload, context) -> payload.apply(context.player().level()));
+        ClientPlayNetworking.registerGlobalReceiver(GridWaitPayload.TYPE, (payload, context) -> payload.apply(context.player()));
     }
 }
