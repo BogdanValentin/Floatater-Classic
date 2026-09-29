@@ -47,7 +47,7 @@ public class GridCarrierRenderer extends EntityRenderer<GridCarrier, GridCarrier
         for (GridBlockRenderState block : state.blocks) {
             poseStack.pushPose();
             poseStack.translate(block.blockPos.getX(), block.blockPos.getY(), block.blockPos.getZ());
-            submitNodeCollector.submitMovingBlock(poseStack, block, 0);
+            submitNodeCollector.submitMovingBlock(poseStack, block);
             poseStack.popPose();
         }
 
