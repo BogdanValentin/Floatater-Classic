@@ -1,36 +1,39 @@
 # Floatater Classic
 
-Brings back the Floatater from the 24w14potato April Fools snapshot (the Poisonous Potato Update).
+Brings back the original Floatater from the 24w14potato April Fools snapshot (the Poisonous Potato Update).
 
-It only existed for that one snapshot. This mod ports the original code to current Minecraft so you can keep building flying machines.
+This mod ports the original code to current Minecraft so you can continue building flying machines.
+
+Official Wiki with more info about this block: https://minecraft.wiki/w/Floatater
+
+![A Floatater flying a contraption](https://i.imgur.com/5DXeuiS.png)
 
 ## How it works
 
-Place a Floatater and it faces whichever way you're looking. That front face is the direction it flies. Give it a redstone signal and a tick later it grabs everything attached to its front and takes off with it.
-
-"Attached" works the same way it did in the snapshot. Blocks stick together when their touching faces overlap. Slime and honey stick on every side, a sticky piston sticks on its face, and a Floatater only sticks on its front. Whatever sits directly in front of it gets pushed along too, even if the shapes don't touch.
+Placing a Floatater will make it face whatever way you're looking. The front face is the direction it will fly. Powering it using a redstone signal will make it grab everything attached to its front and take off.
 
 Some things you'll run into:
-
-- Every powered Floatater pointing the same way adds 0.1 blocks per tick, so stack a few if you're in a hurry.
+- Every powered Floatater pointing in the same way adds 0.1 blocks per tick, so adding a few together will make you move faster.
 - It keeps going until the front of the contraption hits something solid (or the build limit), then puts every block back into the world where it stopped.
-- You can ride it, and so can mobs. If you're flying in creative, it leaves you behind.
-- Anything with a block entity (chests, furnaces, signs) breaks off and drops instead of flying. Annoying, but the snapshot did the same.
-- Water doesn't come with you. Waterlogged blocks fly dry.
-- Keep your build off the ground. It grabs everything connected to it, and if that adds up to more than the size limit, nothing moves.
+- You can ride it. Mobs can also ride it.
+- Anything with a block entity (chests, furnaces, signs) breaks off and drops instead of flying.
+- Water doesn't come with you.
 
-The size limit is the `floatater_classic:floatater_size_limit` game rule. It defaults to 32, so a contraption can be at most 32 x 32 x 32 blocks.
+The size limit is the `floatater_classic:floatater_size_limit` game rule. Default is 32 meaning max size = 32 x 32 x 32 blocks.
 
 ## Floatato
 
-You craft Floataters out of Floatatos, but they're useful on their own too. Use one while looking at nothing and it appears 3 blocks in front of you, hanging in the air. That's the easiest way to start a build off the ground.
+You craft Floataters out of Floatatos, but they're useful on their own too. Use one while looking at the sky and it will appear 3 blocks in front of you, hanging in the air. That's the easiest way to start a build off the ground.
 
 ## Recipes
 
-- Floatato (makes 8): 8 poisonous potatoes around a ghast tear.
-- Floatater: poisonous potatoes across the top, then Floatato, baked potato, Floatato in the middle row, and three Floatatos along the bottom.
+Floatato:
 
-The snapshot put a Hot Potato in the middle of that recipe. Hot Potatoes never made it into the real game, so a baked potato stands in for it.
+![Floatato recipe](https://i.imgur.com/N1a74kj.png)
+
+Floatater:
+
+![Floatater recipe](https://i.imgur.com/G0xjYle.png)
 
 ## Versions
 
@@ -41,7 +44,7 @@ The snapshot put a Hot Potato in the middle of that recipe. Hot Potatoes never m
 | `26.2` | 26.2 | Fabric |
 | `26.2-neoforge` | 26.2 | NeoForge |
 
-Install the mod on both the server and the client. The Fabric builds also need Fabric API.
+Install the mod on both the server and the client (if you play multiplayer). The Fabric builds also need Fabric API.
 
 ## Credits
 
