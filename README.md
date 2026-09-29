@@ -43,8 +43,14 @@ Floatater:
 | `26.3-neoforge` | 26.3 | NeoForge |
 | `26.2` | 26.2 | Fabric |
 | `26.2-neoforge` | 26.2 | NeoForge |
+| `26.1.2` | 26.1.2 | Fabric |
+| `26.1.2-neoforge` | 26.1.2 | NeoForge |
+| `26.1.1` | 26.1.1 | Fabric |
+| `26.1.1-neoforge` | 26.1.1 | NeoForge |
+| `26.1` | 26.1 | Fabric |
+| `26.1-neoforge` | 26.1 | NeoForge |
 
-Install the mod on both the server and the client (if you play multiplayer). The Fabric builds also need Fabric API.
+Install the mod on both the server and the client (if you play multiplayer). The Fabric builds also need Fabric API. Pick the jar that matches your Minecraft version.
 
 ## Credits
 
